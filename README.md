@@ -65,6 +65,8 @@ Code/
 ├── 13_rhoa3_direct_validation.py  # RHOA-3 direct: Phase 4A × 3 global seeds [compute-heavy]
 ├── 14_rhoa2_isolation.py          # Run C: RHOA-1✓ RHOA-2✗ — isolates RHOA-2 effect [compute-heavy]
 ├── 15_recovery_experiment.py      # Formal LURE recovery attribution (analytical, fast)
+├── 16_capture_environment.py      # Environment snapshot for RHOA-4 compliance (fast)
+│
 │
 ├── 19_lure_impl_criterion_test.py # LURE-Impl: AUROC-only revert [COMPLETED Jun 17, 2026]
 │                                  # Run independently — NOT via run_all.py
@@ -336,6 +338,19 @@ Frames Run A vs. Run B as a formal LURE recovery experiment using existing data 
 - **Causal attribution table** (FM-1 → FM-5 contribution per RHOA step)
 
 Output: `Outputs/recovery_experiment/`, `Outputs/stats/recovery_paper_text.txt`
+
+---
+
+#### `16_capture_environment.py`
+Captures the exact computational environment specification for RHOA-4 compliance ("ORB certification must state: sklearn version, scipy version, NumPy version, Python version, OS platform, global seed value, RHOA compliance flag").
+
+Records two environments:
+- **June 2026 (current):** full package versions via `importlib.metadata`, conda-meta timestamps, pip freeze, platform info
+- **March 2026 evidence:** searches conda-meta install dates, pip history, and git tags to reconstruct the Run A environment record
+
+The conda-meta search confirmed that sklearn 1.8.0 and scipy 1.17.1 were installed on Feb 25, 2026 — identical in both Run A and Run B. This finding invalidated the library-version-drift hypothesis and redirected causal attribution to LURE-Impl (Scripts 19 and 20).
+
+Output: `Outputs/stats/environment_june2026.txt`, `Outputs/stats/environment_run_a_evidence.txt`, `Outputs/stats/environment_comparison.csv`, `Outputs/tables/TABLE_environment_comparison.tex`
 
 ---
 
